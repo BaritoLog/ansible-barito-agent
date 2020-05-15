@@ -1,4 +1,0 @@
----
-- name: ansible-fluentd
-  src: https://github.com/BaritoLog/ansible-fluentd
-  scm: git
