@@ -1,0 +1,20 @@
+---
+barito_log_directory: "/var/log/td-agent"
+
+tdagent_version: "3"
+tdagent_groups: ["root"]
+
+tdagent_plugins:
+  - fluent-plugin-systemd
+  - fluent-plugin-barito
+
+tdagent_plugins_versions:
+  barito:
+    name: fluent-plugin-barito
+    version: "0.3.4"
+
+tdagent_sources: []
+
+tdagent_matches: []
+
+tdagent_filters: []

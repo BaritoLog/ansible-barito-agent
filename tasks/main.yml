@@ -1,0 +1,12 @@
+---
+- name: Install td-agent
+  import_tasks: install.yml
+  become: true
+  tags:
+    - tdagent_install
+
+- name: Configure barito agent
+  import_tasks: config.yml
+  become: true
+  tags:
+    - barito_agent_config

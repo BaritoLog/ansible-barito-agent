@@ -1,0 +1,51 @@
+---
+- name: Install required packages
+  apt:
+    state: present
+    update_cache: yes
+    pkg:
+      - build-essential
+      - zlib1g-dev
+      - software-properties-common
+      - apt-transport-https
+
+- name: Add APT signing key for td-agent
+  apt_key:
+    url: https://packages.treasuredata.com/GPG-KEY-td-agent
+    state: present
+
+- name: Add td-agent repository
+  apt_repository:
+    repo: "deb https://packages.treasuredata.com/3/{{ ansible_distribution|lower }}/{{ ansible_distribution_release|lower }}/ {{ ansible_distribution_release|lower }} contrib"
+    state: present
+
+- name: Install td-agent
+  apt:
+    name: td-agent
+    update_cache: yes
+    state: present
+    force: yes
+  when: tdagent_version is not defined
+
+- name: Install td-agent
+  apt:
+    name: "td-agent={{ tdagent_version }}*"
+    update_cache: yes
+    state: present
+    force: yes
+  when: tdagent_version is defined
+
+- name: Install libcurl and make for compiling plugins
+  apt:
+    state: present
+    update_cache: yes
+    pkg:
+      - libcurl4-gnutls-dev
+      - build-essential
+  when: tdagent_plugins is defined or tdagent_plugins_versions is defined
+
+- name: Set service daemon
+  service:
+    name: td-agent
+    state: started
+    enabled: yes

@@ -1,0 +1,12 @@
+---
+- name: restart td-agent
+  become: true
+  service:
+    name: td-agent
+    state: restarted
+
+- name: reload td-agent
+  become: true
+  service:
+    name: td-agent
+    state: reloaded

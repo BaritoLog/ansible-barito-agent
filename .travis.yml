@@ -1,0 +1,14 @@
+---
+dist: bionic
+language: python
+
+services:
+  - docker
+
+install:
+  - pip3 install -r requirements.txt
+
+script:
+  - ansible --version
+  - ansible-galaxy install -r requirements.yml
+  - molecule test

@@ -1,0 +1,30 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    tdagent_sources:
+      - "@type": "tail"
+        type: "tail"
+        name: "barito-test"
+        tag: "barito-test"
+        path: "/var/log/dpkg.log"
+        pos_file: "/etc/td-agent/dpkg.pos"
+        parse:
+          "@type": "none"
+    tdagent_matches:
+      - "@type": barito_vm
+        type: barito_vm
+        name: "barito-test"
+        application_secret: "123456"
+        produce_url: "https://barito-router.local/produce"
+        buffer:
+          flush_mode: immediate
+    tdagent_plugins:
+      - fluent-plugin-systemd
+      - fluent-plugin-barito
+    tdagent_plugins_versions:
+      barito:
+        name: fluent-plugin-barito
+        version: "0.3.4"
+  roles:
+    - ansible-barito-agent

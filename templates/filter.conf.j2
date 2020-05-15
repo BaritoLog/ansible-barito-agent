@@ -1,0 +1,15 @@
+{% for filters in tdagent_filters %}
+<filter {{ filters["name"] }}>
+{% for key in filters|sort %}
+{% if filters[key] is mapping %}
+  <{{ key }}>
+{% for child_key in filters[key]|sort %}
+    {{ child_key }} {{ filters[key][child_key] }}
+{% endfor %}
+  </{{ key }}>
+{% else %}
+{{ key }} {{ filters[key] }}
+{% endif %}
+{% endfor %}
+</filter>
+{% endfor %}

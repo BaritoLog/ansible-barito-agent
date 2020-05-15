@@ -1,0 +1,20 @@
+galaxy_info:
+  author: ekarisky
+  description: Ansible role to install barito agent (td-agent)
+  company: BaritoLog
+  license: license MIT
+  min_ansible_version: 2.9
+  platforms:
+    - name: Ubuntu
+      versions:
+        - bionic
+        - xenial
+  galaxy_tags:
+    - logging
+    - barito
+    - barito-agent
+    - fluentd
+    - td-agent
+    - monitoring
+    - observability
+dependencies: []

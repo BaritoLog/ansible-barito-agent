@@ -1,0 +1,90 @@
+---
+- block:
+    - name: Create journalctl directory if not exists
+      file:
+        path: "/run/log/journal"
+        state: directory
+        recurse: yes
+
+    - name: Change group ownership of journalctl directory
+      command: sudo chown -R :systemd-journal /run/log/journal
+
+    - name: Add td-agent to systemd-journal group
+      command: sudo usermod -a -G systemd-journal td-agent
+
+  when: ansible_distribution_version != "14.04"
+
+- name: Adding td-agent user to multiple groups
+  user:
+    name: td-agent
+    groups: "{{ tdagent_groups }}"
+    append: yes
+
+- name: Remove default td-agent configuration directory
+  file:
+    path: /etc/td-agent/conf.d
+    state: absent
+
+- name: Recreate default td-agent configuration
+  file:
+    path: /etc/td-agent/conf.d
+    state: directory
+    mode: 0755
+    group: "td-agent"
+    owner: "td-agent"
+    recurse: yes
+
+- name: Rename default td-agent.conf
+  command: creates="/etc/td-agent/td-agent.conf.bak" mv /etc/td-agent/td-agent.conf /etc/td-agent/td-agent.conf.bak
+
+- name: Copy td-agent.conf
+  template:
+    src: td-agent.conf.j2
+    dest: /etc/td-agent/td-agent.conf
+    owner: td-agent
+    group: td-agent
+  notify:
+    - reload td-agent
+
+- name: Copy other config files
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/td-agent/conf.d/{{ item }}"
+    owner: td-agent
+    group: td-agent
+  with_items:
+    - filter.conf
+    - match.conf
+    - source.conf
+  notify:
+    - reload td-agent
+
+- name: Install plugins
+  gem:
+    name: "{{ item }}"
+    executable: /opt/td-agent/embedded/bin/fluent-gem
+    state: latest
+    user_install: no
+  with_items: "{{ tdagent_plugins | default([]) }}"
+  notify:
+    - restart td-agent
+
+- name: Install plugins with specified versions
+  gem:
+    name: "{{ item.value.name }}"
+    executable: /opt/td-agent/embedded/bin/fluent-gem
+    state: present
+    version: "{{ item.value.version }}"
+    user_install: no
+  with_dict: "{{ tdagent_plugins_versions | default({}) }}"
+  notify:
+    - restart td-agent
+
+- name: Copy the td-agent logrotate configuration
+  template:
+    src: logrotate/td-agent.j2
+    dest: /etc/logrotate.d/td-agent
+    mode: 0644
+    owner: root
+    group: root
+  notify: reload td-agent
