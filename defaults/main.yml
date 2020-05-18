@@ -18,3 +18,15 @@ tdagent_sources: []
 tdagent_matches: []
 
 tdagent_filters: []
+
+barito_flush_at_shutdown: "false"
+barito_flush_thread_count: 8
+barito_flush_thread_interval: 1.0
+barito_flush_thread_burst_interval: 1.0
+barito_flush_mode: "interval"
+barito_flush_interval: "1s"
+barito_queued_chunks_limit_size: 1
+barito_overflow_action: "drop_oldest_chunk"
+barito_retry_timeout: "0s"
+barito_retry_max_times: 0
+barito_disable_chunk_backup: "true"

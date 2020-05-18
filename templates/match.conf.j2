@@ -1,9 +1,9 @@
-{% for match in tdagent_matches|sort %}
+{% for match in tdagent_matches %}
 <match {{ match["name"] }}>
 {% for key in match|sort %}
 {% if match[key] is mapping %}
   <{{ key }}>
-{% for child_key in match[key]|sort %}
+{% for child_key in match[key] %}
     {{ child_key }} {{ match[key][child_key] }}
 {% endfor %}
   </{{ key }}>

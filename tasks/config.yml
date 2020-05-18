@@ -7,10 +7,12 @@
         recurse: yes
 
     - name: Change group ownership of journalctl directory
-      command: sudo chown -R :systemd-journal /run/log/journal
+      command: chown -R :systemd-journal /run/log/journal
+      become: true
 
     - name: Add td-agent to systemd-journal group
-      command: sudo usermod -a -G systemd-journal td-agent
+      command: usermod -a -G systemd-journal td-agent
+      become: true
 
   when: ansible_distribution_version != "14.04"
 

@@ -1,9 +1,9 @@
 {% for source in tdagent_sources %}
 <source>
-{% for key in source|sort %}
+{% for key in source %}
 {% if source[key] is mapping %}
   <{{ key }}>
-{% for child_key in source[key]|sort %}
+{% for child_key in source[key] %}
     {{ child_key }} {{ source[key][child_key] }}
 {% endfor %}
   </{{ key }}>
