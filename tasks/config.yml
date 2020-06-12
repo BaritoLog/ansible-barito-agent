@@ -21,6 +21,8 @@
     name: td-agent
     groups: "{{ tdagent_groups }}"
     append: yes
+  notify:
+    - restart td-agent
 
 - name: Remove default td-agent configuration directory
   file:
