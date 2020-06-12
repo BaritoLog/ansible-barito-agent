@@ -2,7 +2,7 @@
 barito_log_directory: "/var/log/td-agent"
 
 tdagent_version: "3"
-tdagent_groups: ["root"]
+tdagent_groups: ["root", "postgres", "adm"]
 
 tdagent_plugins:
   - fluent-plugin-systemd
