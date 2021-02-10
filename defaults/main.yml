@@ -19,7 +19,7 @@ tdagent_matches: []
 
 tdagent_filters: []
 
-barito_flush_at_shutdown: "false"
+barito_flush_at_shutdown: "true"
 barito_flush_thread_count: 8
 barito_flush_thread_interval: 1.0
 barito_flush_thread_burst_interval: 1.0
