@@ -1,4 +1,5 @@
 docker
+ansible
 molecule
 molecule[docker]
 netaddr
