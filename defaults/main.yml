@@ -1,7 +1,7 @@
 ---
 barito_log_directory: "/var/log/td-agent"
 
-tdagent_version: "3"
+tdagent_version: "4"
 tdagent_groups: ["root"]
 
 tdagent_plugins:
