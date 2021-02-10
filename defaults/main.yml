@@ -28,5 +28,8 @@ barito_flush_interval: "1s"
 barito_queued_chunks_limit_size: 1
 barito_overflow_action: "drop_oldest_chunk"
 barito_retry_timeout: "0s"
-barito_retry_max_times: 0
+barito_retry_max_times: 3
+barito_retry_type: 'exponential_backoff'
+barito_retry_wait: "1s"
+barito_retry_retry_exponential_backoff_base: 2
 barito_disable_chunk_backup: "true"
