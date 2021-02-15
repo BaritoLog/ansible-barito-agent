@@ -16,7 +16,7 @@
 
 - name: Add td-agent repository
   apt_repository:
-    repo: "deb https://packages.treasuredata.com/3/{{ ansible_distribution|lower }}/{{ ansible_distribution_release|lower }}/ {{ ansible_distribution_release|lower }} contrib"
+    repo: "deb https://packages.treasuredata.com/{{ tdagent_version }}/{{ ansible_distribution|lower }}/{{ ansible_distribution_release|lower }}/ {{ ansible_distribution_release|lower }} contrib"
     state: present
 
 - name: Install td-agent

@@ -66,7 +66,7 @@
 - name: Install plugins
   gem:
     name: "{{ item }}"
-    executable: /opt/td-agent/embedded/bin/fluent-gem
+    executable: /usr/sbin/td-agent-gem
     state: latest
     user_install: no
   with_items: "{{ tdagent_plugins | default([]) }}"
@@ -76,7 +76,7 @@
 - name: Install plugins with specified versions
   gem:
     name: "{{ item.value.name }}"
-    executable: /opt/td-agent/embedded/bin/fluent-gem
+    executable: /usr/sbin/td-agent-gem
     state: present
     version: "{{ item.value.version }}"
     user_install: no
