@@ -10,3 +10,9 @@
   become: true
   tags:
     - barito_agent_config
+
+- name: Set service daemon
+  service:
+    name: td-agent
+    state: started
+    enabled: yes
