@@ -3,6 +3,7 @@ barito_log_directory: "/var/log/td-agent"
 
 tdagent_version: "4"
 tdagent_groups: ["root"]
+tdagent_max_memory: "4G"
 
 tdagent_plugins:
   - fluent-plugin-systemd
