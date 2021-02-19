@@ -43,3 +43,14 @@
       - libcurl4-gnutls-dev
       - build-essential
   when: tdagent_plugins is defined or tdagent_plugins_versions is defined
+
+- name: overwrite td-agent service file
+  template:
+    src: td-agent.service.j2
+    dest: /lib/systemd/system/td-agent.service
+    mode: 0611
+    owner: root
+    group: root
+
+- name: reload config
+  shell: systemctl daemon-reload
