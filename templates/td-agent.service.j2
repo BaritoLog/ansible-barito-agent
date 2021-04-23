@@ -8,9 +8,6 @@ Wants=network-online.target
 User=td-agent
 Group=td-agent
 LimitNOFILE=65536
-Environment=LD_PRELOAD=/opt/td-agent/lib/libjemalloc.so
-Environment=GEM_HOME=/opt/td-agent/lib/ruby/gems/2.7.0/
-Environment=GEM_PATH=/opt/td-agent/lib/ruby/gems/2.7.0/
 Environment=FLUENT_CONF=/etc/td-agent/td-agent.conf
 Environment=FLUENT_PLUGIN=/etc/td-agent/plugin
 Environment=FLUENT_SOCKET=/var/run/td-agent/td-agent.sock
@@ -19,14 +16,21 @@ Environment=TD_AGENT_OPTIONS=
 EnvironmentFile=-/etc/default/td-agent
 RuntimeDirectory=td-agent
 # XXX: Fix fluentd executables path
-ExecStart=/opt/td-agent/bin/fluentd --log $TD_AGENT_LOG_FILE $TD_AGENT_OPTIONS
 # ExecStop=/bin/kill -TERM ${MAINPID}
 ExecReload=/bin/kill -HUP ${MAINPID}
 Restart=always
 TimeoutStopSec=120
 {% if hostvars[inventory_hostname].ansible_distribution_major_version | int <= 16 -%}
+Environment=LD_PRELOAD=/opt/td-agent/embedded/lib/libjemalloc.so
+Environment=GEM_HOME=/opt/td-agent/embedded/lib/ruby/gems/2.4.0/
+Environment=GEM_PATH=/opt/td-agent/embedded/lib/ruby/gems/2.4.0/
+ExecStart=/opt/td-agent/embedded/bin/fluentd --log $TD_AGENT_LOG_FILE $TD_AGENT_OPTIONS
 MemoryLimit={{ tdagent_max_memory }}
 {% else -%}
+Environment=LD_PRELOAD=/opt/td-agent/lib/libjemalloc.so
+Environment=GEM_HOME=/opt/td-agent/lib/ruby/gems/2.7.0/
+Environment=GEM_PATH=/opt/td-agent/lib/ruby/gems/2.7.0/
+ExecStart=/opt/td-agent/bin/fluentd --log $TD_AGENT_LOG_FILE $TD_AGENT_OPTIONS
 MemoryMax={{ tdagent_max_memory }}
 {%- endif -%}
 

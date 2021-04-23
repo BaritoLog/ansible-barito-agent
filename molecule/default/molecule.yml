@@ -4,8 +4,17 @@ dependency:
 driver:
   name: docker
 platforms:
-  - name: instance
+  - name: instance_1804
     image: jrei/systemd-ubuntu:18.04
+    command: /lib/systemd/systemd
+    tmpfs:
+      - /run
+      - /tmp
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+  - name: instance_1604
+    image: jrei/systemd-ubuntu:16.04
     command: /lib/systemd/systemd
     tmpfs:
       - /run
@@ -15,6 +24,12 @@ platforms:
     privileged: true
 provisioner:
   name: ansible
+  inventory:
+    host_vars:
+      instance_1604:
+        tdagent_version: "3"
+      instance_1804:
+        tdagent_version: "4"
 verifier:
   name: ansible
 scenario:
