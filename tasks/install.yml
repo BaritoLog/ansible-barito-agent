@@ -43,7 +43,7 @@
     - ansible_distribution_major_version == "20"
 
 - name: Run tee command after enable focal-updates and apt-get update
-  command: sudo tee -a /etc/apt/sources.list && sudo apt-get update -y
+  command: sudo tee -a /etc/apt/sources.list && sudo apt-get -y update
   when:
     - ansible_distribution_major_version == "20"
 
