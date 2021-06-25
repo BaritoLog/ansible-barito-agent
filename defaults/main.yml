@@ -20,6 +20,11 @@ tdagent_matches: []
 
 tdagent_filters: []
 
+tdagent_configuration_files:
+  - filter.conf
+  - match.conf
+  - source.conf
+
 barito_flush_at_shutdown: "true"
 barito_flush_thread_count: 8
 barito_flush_thread_interval: 1.0

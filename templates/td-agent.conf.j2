@@ -1,1 +1,3 @@
-@include conf.d/*.conf
+{% for tdagent_configuration_file in tdagent_configuration_files %}
+@include conf.d/{{ tdagent_configuration_file }}
+{% endfor %}
