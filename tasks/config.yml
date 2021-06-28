@@ -15,15 +15,6 @@
         append: true
         groups:
           - systemd-journal
-
-- name: Ensure td-agent configurations folder
-  file:
-    path: /etc/td-agent/conf.d
-    state: directory
-    mode: 0644
-    group: "td-agent"
-    owner: "td-agent"
-    recurse: yes
   when: ansible_distribution_version != "14.04"
 
 - name: Adding td-agent user to multiple groups
@@ -33,6 +24,15 @@
     append: yes
   notify:
     - restart td-agent
+
+- name: Ensure td-agent configurations folder
+  file:
+    path: /etc/td-agent/conf.d
+    state: directory
+    mode: 0644
+    group: "td-agent"
+    owner: "td-agent"
+    recurse: yes
 
 - name: Rename default td-agent.conf
   command: creates="/etc/td-agent/td-agent.conf.bak" mv /etc/td-agent/td-agent.conf /etc/td-agent/td-agent.conf.bak
