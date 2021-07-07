@@ -1,19 +1,20 @@
 ---
 - block:
     - name: Create journalctl directory if not exists
+      become: true
       file:
         path: "/run/log/journal"
         state: directory
         recurse: yes
-
-    - name: Change group ownership of journalctl directory
-      command: chown -R :systemd-journal /run/log/journal
-      become: true
+        group: "systemd-journal"
 
     - name: Add td-agent to systemd-journal group
-      command: usermod -a -G systemd-journal td-agent
       become: true
-
+      user:
+        name: td-agent
+        append: true
+        groups:
+          - systemd-journal
   when: ansible_distribution_version != "14.04"
 
 - name: Adding td-agent user to multiple groups
@@ -24,16 +25,11 @@
   notify:
     - restart td-agent
 
-- name: Remove default td-agent configuration directory
-  file:
-    path: /etc/td-agent/conf.d
-    state: absent
-
-- name: Recreate default td-agent configuration
+- name: Ensure td-agent configurations folder
   file:
     path: /etc/td-agent/conf.d
     state: directory
-    mode: 0755
+    mode: 0644
     group: "td-agent"
     owner: "td-agent"
     recurse: yes
@@ -56,10 +52,7 @@
     dest: "/etc/td-agent/conf.d/{{ item }}"
     owner: td-agent
     group: td-agent
-  with_items:
-    - filter.conf
-    - match.conf
-    - source.conf
+  with_items: "{{ tdagent_configuration_files }}"
   notify:
     - reload td-agent
 
