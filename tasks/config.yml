@@ -29,7 +29,7 @@
   file:
     path: /etc/td-agent/conf.d
     state: directory
-    mode: 0644
+    mode: 0755
     group: "td-agent"
     owner: "td-agent"
     recurse: yes
@@ -81,7 +81,7 @@
   template:
     src: logrotate/td-agent.j2
     dest: /etc/logrotate.d/td-agent
-    mode: 0644
+    mode: 0755
     owner: root
     group: root
   notify: reload td-agent
