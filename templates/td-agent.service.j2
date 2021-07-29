@@ -32,7 +32,7 @@ Environment=GEM_HOME=/opt/td-agent/lib/ruby/gems/2.7.0/
 Environment=GEM_PATH=/opt/td-agent/lib/ruby/gems/2.7.0/
 ExecStart=/opt/td-agent/bin/fluentd --log $TD_AGENT_LOG_FILE $TD_AGENT_OPTIONS
 MemoryMax={{ tdagent_max_memory }}
-{%- endif -%}
+{%- endif %}
 
 [Install]
 WantedBy=multi-user.target
