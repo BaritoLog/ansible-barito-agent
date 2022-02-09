@@ -85,3 +85,4 @@
     owner: root
     group: root
   notify: reload td-agent
+  when: not ansible_check_mode
