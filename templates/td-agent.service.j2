@@ -26,10 +26,15 @@ Environment=GEM_HOME=/opt/td-agent/embedded/lib/ruby/gems/2.4.0/
 Environment=GEM_PATH=/opt/td-agent/embedded/lib/ruby/gems/2.4.0/
 ExecStart=/opt/td-agent/embedded/bin/fluentd --log $TD_AGENT_LOG_FILE $TD_AGENT_OPTIONS
 MemoryLimit={{ tdagent_max_memory }}
-{% else -%}
+{% elif hostvars[inventory_hostname].ansible_distribution_major_version | int <= 20 -%}
 Environment=LD_PRELOAD=/opt/td-agent/lib/libjemalloc.so
 Environment=GEM_HOME=/opt/td-agent/lib/ruby/gems/2.7.0/
 Environment=GEM_PATH=/opt/td-agent/lib/ruby/gems/2.7.0/
+ExecStart=/opt/td-agent/bin/fluentd --log $TD_AGENT_LOG_FILE $TD_AGENT_OPTIONS
+MemoryMax={{ tdagent_max_memory }}
+{% else -%}
+Environment=GEM_HOME=/opt/td-agent/lib/ruby/gems/3.1.0/
+Environment=GEM_PATH=/opt/td-agent/lib/ruby/gems/3.1.0/
 ExecStart=/opt/td-agent/bin/fluentd --log $TD_AGENT_LOG_FILE $TD_AGENT_OPTIONS
 MemoryMax={{ tdagent_max_memory }}
 {%- endif %}
