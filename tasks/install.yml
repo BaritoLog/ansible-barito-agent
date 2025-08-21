@@ -18,6 +18,13 @@
   apt_repository:
     repo: "deb https://packages.treasuredata.com/{{ tdagent_version }}/{{ ansible_distribution|lower }}/{{ ansible_distribution_release|lower }}/ {{ ansible_distribution_release|lower }} contrib"
     state: present
+  when: override_td_agent_repository is not defined
+
+- name: Add td-agent repository
+  apt_repository:
+    repo: "{{ override_td_agent_repository }}"
+    state: present
+  when: override_td_agent_repository is defined
 
 - name: Install td-agent
   apt:
