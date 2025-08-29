@@ -65,6 +65,28 @@
   with_items: "{{ tdagent_plugins | default([]) }}"
   notify:
     - restart td-agent
+  when: ansible_distribution != 'Debian'
+
+- name: Install plugins (Debian)
+  gem:
+    name: "{{ item.split(':')[0] }}"
+    executable: /usr/sbin/td-agent-gem
+    state: present
+    version: "{{ (item.split(':')[1] if item.split(':')|length > 1 else omit) }}"
+    user_install: no
+  with_items: >-
+    {% set new_list = [] %}
+    {% for plugin in tdagent_plugins | default([]) %}
+      {% if plugin == 'fluent-plugin-systemd' %}
+        {% set _ = new_list.append(plugin + ':1.0.5') %}
+      {% else %}
+        {% set _ = new_list.append(plugin) %}
+      {% endif %}
+    {% endfor %}
+    {{ new_list }}
+  notify:
+    - restart td-agent
+  when: ansible_distribution == 'Debian'
 
 - name: Install plugins with specified versions
   gem:
