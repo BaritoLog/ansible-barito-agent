@@ -20,7 +20,7 @@ RuntimeDirectory=td-agent
 ExecReload=/bin/kill -HUP ${MAINPID}
 Restart=always
 TimeoutStopSec=120
-{% if hostvars[inventory_hostname].ansible_distribution_major_version | int <= 16 -%}
+{% if hostvars[inventory_hostname].ansible_distribution_major_version | int <= 16 and hostvars[inventory_hostname].ansible_distribution != 'Debian' -%}
 Environment=LD_PRELOAD=/opt/td-agent/embedded/lib/libjemalloc.so
 Environment=GEM_HOME=/opt/td-agent/embedded/lib/ruby/gems/2.4.0/
 Environment=GEM_PATH=/opt/td-agent/embedded/lib/ruby/gems/2.4.0/
