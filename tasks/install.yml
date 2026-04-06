@@ -60,7 +60,7 @@
     state: present
     update_cache: yes
     pkg:
-      - libcurl4-gnutls-dev
+      - libcurl4-openssl-dev
       - build-essential
   when: tdagent_plugins is defined or tdagent_plugins_versions is defined
 
