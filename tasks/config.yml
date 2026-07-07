@@ -89,6 +89,18 @@
   notify:
     - restart td-agent
 
+- name: Update bundled gems to pinned versions
+  gem:
+    name: "{{ item.name }}"
+    executable: /usr/sbin/td-agent-gem
+    state: present
+    version: "{{ item.version }}"
+    user_install: no
+  with_items: "{{ tdagent_gem_overrides | default([]) }}"
+  when: ansible_distribution_major_version | int > 20
+  notify:
+    - restart td-agent
+
 - name: Copy the td-agent logrotate configuration
   template:
     src: logrotate/td-agent.j2
